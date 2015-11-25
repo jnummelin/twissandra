@@ -1,10 +1,11 @@
 from datetime import datetime
 from uuid import uuid1, UUID
 import random
+import os
 
 from cassandra.cluster import Cluster
 
-cluster = Cluster(['127.0.0.1'])
+cluster = Cluster(os.environ['CASSANDRA_HOSTS'].split(","))
 session = cluster.connect('twissandra')
 
 # Prepared statements, reuse as much as possible by binding new values

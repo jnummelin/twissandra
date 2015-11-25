@@ -1,10 +1,12 @@
 from cassandra.cluster import Cluster
 from django.core.management.base import NoArgsCommand
 
+import os
+
 class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
-        cluster = Cluster(['127.0.0.1'])
+        cluster = Cluster(os.environ['CASSANDRA_HOSTS'].split(","))
         session = cluster.connect()
 
         rows = session.execute(

@@ -7,6 +7,8 @@ import uuid
 
 import cass
 
+import names
+
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
@@ -27,17 +29,20 @@ class Command(BaseCommand):
         num_tweets = [int(x * normalizer) for x in sample]
 
         for i in range(num_users):
-            username = self.get_random_string()
+            username = self.get_random_username()
             cass.save_user(username, self.get_random_string())
             creation_date = random.randint(origin, now)
 
             for _ in range(num_tweets[i % max_tweets]):
                 cass.save_tweet(uuid.uuid1(), username, self.get_tweet(), timestamp=random.randint(creation_date, now))
 
-            print "created user"
+            print("created user: %s", username)
 
     def get_tweet(self):
         return loremipsum.get_sentence()
 
     def get_random_string(self):
         return ''.join(random.sample(string.letters, 10))
+
+    def get_random_username(self):
+        return names.get_first_name() + "_" + names.get_last_name();

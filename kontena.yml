@@ -1,0 +1,16 @@
+cassandra:
+  instances: 3
+  stateful: true
+  image: jnummelin/weave-cassandra:2.2.3
+  environment:
+  - CASSANDRA_LISTEN_ADDRESS=weave
+  - CASSANDRA_BROADCAST_ADDRESS=weave
+  - CASSANDRA_SEEDS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
+
+twissandra:
+  instances: 3
+  image: jnummelin/twissandra:latest
+  ports:
+  - 8080:8080
+  environment:
+  - CASSANDRA_HOSTS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
