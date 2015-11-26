@@ -13,8 +13,6 @@ RUN apk --update add --virtual build-dependencies python-dev build-base wget \
 
 ADD . /app/
 
-#ENTRYPOINT "python manage.py"
-
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
 
 EXPOSE 8080
