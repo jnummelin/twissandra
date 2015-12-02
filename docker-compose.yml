@@ -1,0 +1,12 @@
+cassandra:
+  image: jnummelin/weave-cassandra:2.2.3
+
+
+twissandra:
+  build: .
+  ports:
+  - 8080:8080
+  environment:
+  - CASSANDRA_HOSTS=cassandra
+  links:
+    - cassandra:cassandra

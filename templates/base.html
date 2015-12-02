@@ -1,3 +1,4 @@
+{% load hostname %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -13,7 +14,7 @@
 	    <div class="container_12 clearfix">
 	        <div id="header">
 	            <div id="logo" class="grid_7">
-	                <a href="/">Twissandra</a>
+	                <a href="/">Twissandra (served by: {% hostname %})</a>
 	            </div>
         	    <ul id="nav" class="grid_5">
         	        <li><a href="{% url 'timeline' %}">Home</a></li>
