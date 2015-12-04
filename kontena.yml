@@ -3,22 +3,29 @@ cassandra:
   stateful: true
   image: jnummelin/weave-cassandra:2.2.3
   environment:
-  - CASSANDRA_LISTEN_ADDRESS=weave
-  - CASSANDRA_BROADCAST_ADDRESS=weave
-  - CASSANDRA_SEEDS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
-
+    - CASSANDRA_LISTEN_ADDRESS=weave
+    - CASSANDRA_BROADCAST_ADDRESS=weave
+    - CASSANDRA_SEEDS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
 
 twissandra:
   instances: 3
   image: jnummelin/twissandra:latest
-  ports:
-  - 8080:8080
   environment:
-  - CASSANDRA_HOSTS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
-  - KONTENA_LB_VIRTUAL_HOSTS=twissandra.digiacloud.com
-  - KONTENA_LB_INTERNAL_PORT=8080
+    - CASSANDRA_HOSTS=%{project}-cassandra-1,%{project}-cassandra-2,%{project}-cassandra-3
+    - KONTENA_LB_VIRTUAL_HOSTS=twissandra.digiacloud.com
+    - KONTENA_LB_INTERNAL_PORT=8080
   links:
     - lb
+  hooks:
+    post_start:
+      - cmd: python manage.py sync_cassandra
+        name: sync_cassandra
+        instances: 1
+        oneshot: true
+      - cmd: python manage.py fake_data 1000 100
+        name: fake_data
+        instances: 1
+        oneshot: true
 
 lb:
   image: kontena/lb:latest
