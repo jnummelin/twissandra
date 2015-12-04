@@ -18,7 +18,11 @@ twissandra:
     - lb
   hooks:
     post_start:
-      - cmd: python manage.py sync_cassandra
+      - cmd: while ! ping -c1 %{project}-cassandra-3 &>/dev/null; do echo "waiting for cassandra" && sleep 1; done
+        name: wait_cassandra
+        instances: 1
+        oneshot: true
+      - cmd: sleep 30 && python manage.py sync_cassandra
         name: sync_cassandra
         instances: 1
         oneshot: true
